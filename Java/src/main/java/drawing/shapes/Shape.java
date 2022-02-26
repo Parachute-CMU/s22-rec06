@@ -1,5 +1,6 @@
 package drawing.shapes;
 
+import drawing.formatting.Formatter;
 import drawing.writing.JPEGWriter;
 import drawing.writing.PNGWriter;
 
@@ -10,18 +11,10 @@ public interface Shape {
 
     Line[] toLines();
 
-    default void draw(Writer writer, Line[] lines) {
-        try {
-            for (Line line : lines) {
-                if (writer instanceof JPEGWriter) {
-                    writer.write(line.toJPEG());
-                }
-                else if (writer instanceof PNGWriter) {
-                    writer.write(line.toPNG());
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    default void draw(Writer writer, Formatter formatter) throws IOException {
+        Line[] lines = this.toLines();
+        for (Line line: lines) {
+            writer.write(formatter.format(line));
         }
     }
 }

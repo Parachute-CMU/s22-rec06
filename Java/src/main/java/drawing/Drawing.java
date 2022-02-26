@@ -1,5 +1,8 @@
 package drawing;
 
+import drawing.formatting.Formatter;
+import drawing.formatting.JPEGFormatter;
+import drawing.formatting.PNGFormatter;
 import drawing.shapes.Line;
 import drawing.shapes.Shape;
 import drawing.writing.JPEGWriter;
@@ -18,26 +21,25 @@ public class Drawing {
     }
 
     public void draw(String format, String filename) {
+        String outName = filename + "." +  format;
         if (format.equals("jpeg")) {
-            try (Writer writer = new JPEGWriter(filename + ".jpeg")) {
-                for (Shape shape : this.shapes) {
-                    Line[] lines = shape.toLines();
-                    shape.draw(writer, lines);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            this.write(new JPEGWriter(outName), new JPEGFormatter());
+        } else if (format.equals("png")) {
+            this.write(new PNGWriter(outName), new PNGFormatter());
+        } else {
+            throw new IllegalArgumentException("Format not recognized: " + format);
         }
-        else if (format.equals("png")) {
-            try (Writer writer = new PNGWriter(filename + ".png")) {
-                for (Shape shape : this.shapes) {
-                    Line[] lines = shape.toLines();
-                    shape.draw(writer, lines);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+    }
+
+    private void write(Writer writer, Formatter formatter) {
+        try {
+            for (Shape shape : shapes) {
+                shape.draw(writer, formatter);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
     }
 }
 
