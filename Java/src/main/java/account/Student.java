@@ -1,11 +1,12 @@
 package account;
 
-public class Student extends PaymentAccount {
+public class Student {
 
+    private AccountData accountData;
     private double gpa;
 
     public Student(String name, int studentID, double gpa) {
-        super(name, studentID);
+        this.accountData = new AccountData(name, studentID);
         this.gpa = gpa;
     }
 
@@ -17,8 +18,4 @@ public class Student extends PaymentAccount {
         return this.gpa;
     }
 
-    @Override
-    public boolean pay(int amount) {
-        return false; // No payment option.
-    }
 }
