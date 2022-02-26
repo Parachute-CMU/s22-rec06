@@ -14,21 +14,12 @@ public class Frogger {
 
     public boolean move(boolean forward) {
         int nextPosition = this.position + (forward ? 1 : -1);
-        if (!isValid(nextPosition) || isOccupied(nextPosition)) {
+        if (!this.road.isValid(nextPosition) || this.road.isOccupied(nextPosition)) {
             return false;
         }
         this.position = nextPosition;
         return true;
     }
 
-    public boolean isOccupied(int position) {
-        boolean[] occupied = this.road.getOccupied();
-        return occupied[position];
-    }
 
-    public boolean isValid(int position) {
-        if (position < 0) return false;
-        boolean[] occupied = this.road.getOccupied();
-        return position < occupied.length;
-    }
 }
